@@ -3,9 +3,10 @@
 	"id": "walkietalkie",
 	"version": "${version}",
 	"name": "Walkie-Talkie",
-	"description": "Adds walkie-talkies with different upgrades",
+	"description": "Adds walkietalkies with different upgrades, BACKPORTED BY POTATO",
 	"authors": [
-		"Flaton"
+		"Flaton (OG)",
+		"Potato (PORTER)"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -16,24 +17,25 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"fr.flaton.walkietalkie.WalkieTalkie"
+			"com.potatomato.walkietalkie.WalkieTalkie"
 		],
 		"client": [
-			"fr.flaton.walkietalkie.WalkieTalkieClient"
+			"com.potatomato.walkietalkie.WalkieTalkieClient"
 		],
 		"voicechat": [
-			"fr.flaton.walkietalkie.WalkieTalkieVoiceChatPlugin"
+			"com.potatomato.walkietalkie.WalkieTalkieVoiceChatPlugin"
 		]
 	},
 	"mixins": [
 
 	],
 	"depends": {
-		"fabricloader": ">=0.14.17",
-		"minecraft": "1.19.4",
+		"fabricloader": ">=0.14.19",
+		"minecraft": "~1.18.2",
 		"java": ">=17",
 		"fabric-api": "*",
-		"voicechat": ">=1.19.4-2.3.3"
+		"fabric-language-kotlin": ">=1.8.21",
+		"voicechat": ">=1.18.2-2.4.5"
 	},
 	"suggests": {
 		"another-mod": "*"
