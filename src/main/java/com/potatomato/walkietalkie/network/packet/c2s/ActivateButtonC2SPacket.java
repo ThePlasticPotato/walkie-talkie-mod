@@ -1,5 +1,6 @@
 package com.potatomato.walkietalkie.network.packet.c2s;
 
+import com.potatomato.walkietalkie.item.ToggleableBasicTalkieItem;
 import com.potatomato.walkietalkie.item.WalkieTalkieItem;
 import com.potatomato.walkietalkie.network.ModMessages;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -18,6 +19,15 @@ public class ActivateButtonC2SPacket {
         ItemStack stack = player.getStackInHand(getHandUse(player));
 
         if (!stack.getItem().getClass().equals(WalkieTalkieItem.class)) {
+            if (stack.getItem().getClass().equals(ToggleableBasicTalkieItem.class)) {
+                stack.getNbt().putBoolean(ToggleableBasicTalkieItem.NBT_KEY_ACTIVATE, !stack.getNbt().getBoolean(ToggleableBasicTalkieItem.NBT_KEY_ACTIVATE));
+
+                PacketByteBuf packet = PacketByteBufs.create();
+                packet.writeItemStack(stack);
+                packetSender.sendPacket(ModMessages.BUTTON_PRESSED_RESPONSE, packet);
+                return;
+            }
+
             return;
         }
 
@@ -33,10 +43,10 @@ public class ActivateButtonC2SPacket {
         ItemStack mainHand = player.getStackInHand(Hand.MAIN_HAND);
         ItemStack offHand = player.getStackInHand(Hand.OFF_HAND);
 
-        if (mainHand.getItem() instanceof WalkieTalkieItem) {
+        if (mainHand.getItem() instanceof WalkieTalkieItem || mainHand.getItem() instanceof ToggleableBasicTalkieItem) {
             return Hand.MAIN_HAND;
         }
-        if (offHand.getItem() instanceof WalkieTalkieItem) {
+        if (offHand.getItem() instanceof WalkieTalkieItem || offHand.getItem() instanceof ToggleableBasicTalkieItem) {
             return Hand.OFF_HAND;
         }
         return null;

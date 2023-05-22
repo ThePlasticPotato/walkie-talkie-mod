@@ -30,15 +30,6 @@ public class BasicTalkieItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 
-        if (world.isClient()) {
-            if (player.getStackInHand(hand).hasNbt()) {
-
-                ItemStack stack = player.getStackInHand(hand);
-
-                new WalkieTalkieScreen(stack);
-            }
-        }
-
         return super.use(world, player, hand);
     }
 

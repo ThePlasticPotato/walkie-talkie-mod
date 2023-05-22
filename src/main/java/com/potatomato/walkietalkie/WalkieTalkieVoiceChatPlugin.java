@@ -1,6 +1,7 @@
 package com.potatomato.walkietalkie;
 
 import com.potatomato.walkietalkie.item.BasicTalkieItem;
+import com.potatomato.walkietalkie.item.ToggleableBasicTalkieItem;
 import de.maxhenkel.voicechat.api.VoicechatConnection;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
@@ -120,7 +121,7 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
 
 
         for (ItemStack item : hotbar) {
-            if (item.getItem().getClass().equals(BasicTalkieItem.class) && item.hasNbt()) {
+            if ((item.getItem().getClass().equals(BasicTalkieItem.class) && item.hasNbt())) {
 
                 BasicTalkieItem basicTalkieItem = (BasicTalkieItem) Objects.requireNonNull(item.getItem());
 
@@ -133,18 +134,31 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
 
         for (ItemStack item : inventory) {
 
-            if (item.getItem().getClass().equals(WalkieTalkieItem.class) && item.hasNbt()) {
+            if ((item.getItem().getClass().equals(WalkieTalkieItem.class) && item.hasNbt()) || (item.getItem().getClass().equals(ToggleableBasicTalkieItem.class) && item.hasNbt())) {
+                if (item.getItem().getClass().equals(WalkieTalkieItem.class)) {
+                    WalkieTalkieItem walkieTalkieItem = (WalkieTalkieItem) Objects.requireNonNull(item.getItem());
 
-                WalkieTalkieItem walkieTalkieItem = (WalkieTalkieItem) Objects.requireNonNull(item.getItem());
+                    if (!Objects.requireNonNull(item.getNbt()).getBoolean(WalkieTalkieItem.NBT_KEY_ACTIVATE)) {
+                        continue;
+                    }
 
-                if (!Objects.requireNonNull(item.getNbt()).getBoolean(WalkieTalkieItem.NBT_KEY_ACTIVATE)) {
-                    continue;
+                    if (walkieTalkieItem.getRange() > range) {
+                        itemStack = item;
+                        range = walkieTalkieItem.getRange();
+                    }
+                } else if (item.getItem().getClass().equals(ToggleableBasicTalkieItem.class)) {
+                    ToggleableBasicTalkieItem walkieTalkieItem = (ToggleableBasicTalkieItem) Objects.requireNonNull(item.getItem());
+
+                    if (!Objects.requireNonNull(item.getNbt()).getBoolean(ToggleableBasicTalkieItem.NBT_KEY_ACTIVATE)) {
+                        continue;
+                    }
+
+                    if (walkieTalkieItem.getRange() > range) {
+                        itemStack = item;
+                        range = walkieTalkieItem.getRange();
+                    }
                 }
 
-                if (walkieTalkieItem.getRange() > range) {
-                    itemStack = item;
-                    range = walkieTalkieItem.getRange();
-                }
             }
             
         }

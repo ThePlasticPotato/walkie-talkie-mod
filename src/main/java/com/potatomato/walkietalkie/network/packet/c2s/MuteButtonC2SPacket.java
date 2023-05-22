@@ -1,5 +1,6 @@
 package com.potatomato.walkietalkie.network.packet.c2s;
 
+import com.potatomato.walkietalkie.item.ToggleableBasicTalkieItem;
 import com.potatomato.walkietalkie.item.WalkieTalkieItem;
 import com.potatomato.walkietalkie.network.ModMessages;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -33,10 +34,10 @@ public class MuteButtonC2SPacket {
         ItemStack mainHand = player.getStackInHand(Hand.MAIN_HAND);
         ItemStack offHand = player.getStackInHand(Hand.OFF_HAND);
 
-        if (mainHand.getItem() instanceof WalkieTalkieItem) {
+        if (mainHand.getItem() instanceof WalkieTalkieItem || mainHand.getItem() instanceof ToggleableBasicTalkieItem) {
             return Hand.MAIN_HAND;
         }
-        if (offHand.getItem() instanceof WalkieTalkieItem) {
+        if (offHand.getItem() instanceof WalkieTalkieItem || offHand.getItem() instanceof ToggleableBasicTalkieItem) {
             return Hand.OFF_HAND;
         }
         return null;
