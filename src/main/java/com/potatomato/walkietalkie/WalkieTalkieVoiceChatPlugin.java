@@ -1,5 +1,6 @@
 package com.potatomato.walkietalkie;
 
+import com.potatomato.walkietalkie.item.BasicTalkieItem;
 import de.maxhenkel.voicechat.api.VoicechatConnection;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
@@ -53,9 +54,10 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
         if (getWalkieTalkieActivate(senderPlayer) == null) {
             return;
         }
-
-        if (isWalkieTalkieMute(senderStack)) {
-            return;
+        if (senderStack.getItem().getClass().equals(WalkieTalkieItem.class)) {
+            if (isWalkieTalkieMute(senderStack)) {
+                return;
+            }
         }
 
         int senderCanal = getCanal(senderStack);
@@ -112,6 +114,23 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
         inventory.addAll(playerInventory.armor);
         inventory.addAll(playerInventory.offHand);
 
+        ArrayList<ItemStack> hotbar = new ArrayList<>();
+        hotbar.addAll(playerInventory.main.subList(0, 9));
+        hotbar.addAll(playerInventory.offHand);
+
+
+        for (ItemStack item : hotbar) {
+            if (item.getItem().getClass().equals(BasicTalkieItem.class) && item.hasNbt()) {
+
+                BasicTalkieItem basicTalkieItem = (BasicTalkieItem) Objects.requireNonNull(item.getItem());
+
+                if (basicTalkieItem.getRange() > range) {
+                    itemStack = item;
+                    range = basicTalkieItem.getRange();
+                }
+            }
+        }
+
         for (ItemStack item : inventory) {
 
             if (item.getItem().getClass().equals(WalkieTalkieItem.class) && item.hasNbt()) {
@@ -135,10 +154,17 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
     }
 
     private int getCanal(ItemStack stack) {
+        if (stack.getItem().getClass().equals(BasicTalkieItem.class)) {
+            return 999;
+        }
         return Objects.requireNonNull(stack.getNbt()).getInt(WalkieTalkieItem.NBT_KEY_CANAL);
     }
 
     private int getRange(ItemStack stack) {
+        if (stack.getItem().getClass().equals(BasicTalkieItem.class)) {
+            BasicTalkieItem item = (BasicTalkieItem) Objects.requireNonNull(stack.getItem());
+            return item.getRange();
+        }
         WalkieTalkieItem item = (WalkieTalkieItem) Objects.requireNonNull(stack.getItem());
         return item.getRange();
     }

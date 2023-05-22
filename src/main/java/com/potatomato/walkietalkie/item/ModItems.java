@@ -16,6 +16,8 @@ public class ModItems {
     public static final Item DIAMOND_WALKIETALKIE = registerItem("diamond_walkietalkie", new WalkieTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.diamondWalkieTalkieRange));
     public static final Item NETHERITE_WALKIETALKIE = registerItem("netherite_walkietalkie", new WalkieTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE).fireproof(), ModConfig.netheriteWalkieTalkieRange));
 
+    public static final Item BASICTALKIE = registerItem("basictalkie", new BasicTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.diamondWalkieTalkieRange));
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(WalkieTalkie.MOD_ID, name), item);
     }
