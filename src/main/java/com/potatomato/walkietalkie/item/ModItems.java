@@ -21,6 +21,12 @@ public class ModItems {
     public static final Item TOGGLEABLEBASICTALKIEONE = registerItem("toggleablebasictalkieone", new ToggleableBasicTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.ironWalkieTalkieRange, 420));
     public static final Item TOGGLEABLEBASICTALKIETWO = registerItem("toggleablebasictalkietwo", new ToggleableBasicTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.diamondWalkieTalkieRange, 69));
 
+    public static final Item RADIORECIEVER = registerItem("radioreciever", new RadioRecieverItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.ironWalkieTalkieRange, 776));
+
+    public static final Item RADIOTRANSMITTER = registerItem("radiotransmitter", new ToggleableBasicTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.diamondWalkieTalkieRange, 776));
+
+    public static final Item TAGTALKIE = registerItem("tagtalkie", new TagTalkieItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.WALKIETALKIE), ModConfig.netheriteWalkieTalkieRange));
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(WalkieTalkie.MOD_ID, name), item);
     }

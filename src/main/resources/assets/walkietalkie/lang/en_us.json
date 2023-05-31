@@ -7,6 +7,9 @@
   "item.walkietalkie.basictalkie": "Basic-Talkie",
   "item.walkietalkie.toggleablebasictalkieone": "Toggleable Basic-Talkie (1)",
   "item.walkietalkie.toggleablebasictalkietwo": "Toggleable Basic-Talkie (2)",
+  "item.walkietalkie.radiotransmitter": "Radio Transmitter",
+  "item.walkietalkie.radioreceiver": "Radio Receiver",
+  "item.walkietalkie.tagtalkie": "Tag-Talkie",
 
   "block.walkietalkie.speaker": "Speaker",
 
