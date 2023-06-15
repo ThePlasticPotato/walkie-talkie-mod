@@ -16,10 +16,13 @@ public class ToggleableBasicTalkieItem extends BasicTalkieItem {
 
     private final int CANAL;
     public static final String NBT_KEY_ACTIVATE = "walkietalkie.activate";
+    public static final String NBT_KEY_SFX = "walkietalkie.sfx";
+    public final int SFX;
 
-    public ToggleableBasicTalkieItem(Settings settings, int range, int canal) {
+    public ToggleableBasicTalkieItem(Settings settings, int range, int canal, int sfx) {
         super(settings, range);
         CANAL = canal;
+        SFX = sfx;
     }
 
     @Override
@@ -39,6 +42,10 @@ public class ToggleableBasicTalkieItem extends BasicTalkieItem {
         return super.use(world, player, hand);
     }
 
+    public int getSFX() {
+        return SFX;
+    }
+
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (world.isClient()) {
@@ -49,6 +56,7 @@ public class ToggleableBasicTalkieItem extends BasicTalkieItem {
             NbtCompound nbtCompound = new NbtCompound();
             nbtCompound.putInt(BasicTalkieItem.NBT_KEY_CANAL, CANAL);
             nbtCompound.putBoolean(ToggleableBasicTalkieItem.NBT_KEY_ACTIVATE, true);
+            nbtCompound.putInt(ToggleableBasicTalkieItem.NBT_KEY_SFX, SFX);
             stack.setNbt(nbtCompound);
         }
 

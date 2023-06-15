@@ -9,10 +9,13 @@ import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import de.maxhenkel.voicechat.api.events.VoicechatServerStartedEvent;
 import de.maxhenkel.voicechat.api.packets.StaticSoundPacket;
 import com.potatomato.walkietalkie.block.entity.SpeakerBlockEntity;
+import net.minecraft.client.sound.SoundEngine;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -50,27 +53,27 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
         }
 
         ItemStack senderStack = getWalkieTalkieActivate(senderPlayer);
+        if (senderStack != null) {
+            if (senderStack.getItem().getClass().equals(TagTalkieItem.class)) {
+                for (PlayerEntity receiverPlayer : Objects.requireNonNull(senderPlayer.getServer()).getPlayerManager().getPlayerList()) {
+                    NbtCompound nbt = new NbtCompound();
+                    receiverPlayer.writeNbt(nbt);
 
-        if (senderStack.getItem().getClass().equals(TagTalkieItem.class)) {
-            for (PlayerEntity receiverPlayer : Objects.requireNonNull(senderPlayer.getServer()).getPlayerManager().getPlayerList()) {
-                NbtCompound nbt = new NbtCompound();
-                receiverPlayer.writeNbt(nbt);
+                    if (nbt.contains("archrecieve")){
+                        // Send audio
+                        VoicechatConnection connection = voicechatServerApi.getConnectionOf(receiverPlayer.getUuid());
+                        if (connection == null) {
+                            continue;
+                        }
 
-                if (nbt.contains("archrecieve")){
-                    // Send audio
-                    VoicechatConnection connection = voicechatServerApi.getConnectionOf(receiverPlayer.getUuid());
-                    if (connection == null) {
-                        continue;
+                        StaticSoundPacket packet = event.getPacket().toStaticSoundPacket();
+
+                        voicechatServerApi.sendStaticSoundPacketTo(connection, packet);
                     }
-
-                    StaticSoundPacket packet = event.getPacket().toStaticSoundPacket();
-
-                    voicechatServerApi.sendStaticSoundPacketTo(connection, packet);
                 }
+                return;
             }
-            return;
         }
-
 
         if (getWalkieTalkieActivate(senderPlayer) == null) {
             return;
@@ -119,6 +122,24 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
             StaticSoundPacket packet = event.getPacket().toStaticSoundPacket();
 
             voicechatServerApi.sendStaticSoundPacketTo(connection, packet);
+
+            if(senderStack.getItem().getClass().equals(ToggleableBasicTalkieItem.class)) {
+                ToggleableBasicTalkieItem toggleableBasicTalkieItem = (ToggleableBasicTalkieItem) Objects.requireNonNull(senderStack.getItem());
+                int sfx = toggleableBasicTalkieItem.getSFX();
+
+                SoundEvent sound;
+
+                if (sfx == 1) {
+                    sound = WalkieTalkie.notStaticNoise;
+                } else if (sfx == 0) {
+                    sound = WalkieTalkie.staticNoise;
+                } else {
+                    sound = null;
+                }
+                if (sound != null) {
+                    receiverPlayer.playSound(sound, SoundCategory.VOICE, 1f, 1f);
+                }
+            }
         }
     }
 
@@ -285,7 +306,7 @@ public class WalkieTalkieVoiceChatPlugin implements VoicechatPlugin {
     }
 
     private int getRange(ItemStack stack) {
-        if (stack.getItem().getClass().equals(BasicTalkieItem.class)) {
+        if (stack.getItem().getClass().equals(BasicTalkieItem.class) || stack.getItem().getClass().equals(ToggleableBasicTalkieItem.class)) {
             BasicTalkieItem item = (BasicTalkieItem) Objects.requireNonNull(stack.getItem());
             return item.getRange();
         }

@@ -23,9 +23,7 @@ public class ModMessages {
         ServerPlayNetworking.registerGlobalReceiver(MUTE_PRESSED, MuteButtonC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(ACTIVATE_PRESSED, ActivateButtonC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(CANAL_PRESSED, CanalButtonC2SPacket::receive);
-
         ServerPlayNetworking.registerGlobalReceiver(UPDATE_SPEAKER, UpdateSpeakerC2SPacket::receive);
-
     }
 
     public static void registerS2CPackets() {

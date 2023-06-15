@@ -1,0 +1,12 @@
+{
+  "static": {
+    "sounds": [
+      "tutorial:static"
+    ]
+  },
+  "notstatic": {
+    "sounds": [
+      "tutorial:notstatic"
+    ]
+  }
+}
