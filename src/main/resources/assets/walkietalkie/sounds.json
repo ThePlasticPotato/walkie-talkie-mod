@@ -1,12 +1,12 @@
 {
   "static": {
     "sounds": [
-      "tutorial:static"
+      "walkietalkie:static"
     ]
   },
   "notstatic": {
     "sounds": [
-      "tutorial:notstatic"
+      "walkietalkie:notstatic"
     ]
   }
 }
